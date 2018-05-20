@@ -1,4 +1,6 @@
 class AdvertisementsController < ApplicationController
+  before_action :set_current_user, only: [:index, :edit, :update, :delete, :destroy]
+  before_action :set_authorization, only: [:show, :edit, :update, :delete, :destroy]
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy]
 
   # GET /advertisements
@@ -28,7 +30,7 @@ class AdvertisementsController < ApplicationController
 
     respond_to do |format|
       if @advertisement.save
-        format.html { redirect_to @advertisement, notice: 'Advertisement was successfully created.' }
+        format.html { redirect_to advertisements_path, notice: 'Advertisement was successfully created.' }
         format.json { render :show, status: :created, location: @advertisement }
       else
         format.html { render :new }
@@ -69,6 +71,6 @@ class AdvertisementsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def advertisement_params
-      params.require(:advertisement).permit(:title, :content)
+      params.require(:advertisement).permit(:title, :content, :user_id)
     end
 end
