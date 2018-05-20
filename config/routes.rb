@@ -4,5 +4,6 @@ Rails.application.routes.draw do
   post '/users/login', to: 'users#check'
   resources :users
   root to: "users#index"
+  resources :advertisements
 
 end
