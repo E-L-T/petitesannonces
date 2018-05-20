@@ -1,4 +1,5 @@
 class UsersController < ApplicationController
+  before_action :set_user, only: [:show, :edit, :update, :destroy]
 
   def login
   end
@@ -27,6 +28,16 @@ class UsersController < ApplicationController
   end
 
   def show
+    p '*'*60
+    p @current_user.id
+    p @user.id
+    p @current_user.role
+    if @current_user.role == "admin"
+      return true
+    end
+    if @current_user.id != @user.id
+      return head :forbidden
+    end
   end
 
   def new
@@ -69,6 +80,13 @@ class UsersController < ApplicationController
   end
 
   private
+
+    def set_user
+      if params[:id]
+        @user = User.find(params[:id])
+      end
+    end
+
     def user_params
       params.require(:user).permit(:name, :password)
     end

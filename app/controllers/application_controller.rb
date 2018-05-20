@@ -1,14 +1,7 @@
 class ApplicationController < ActionController::Base
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :set_current_user, only: :index
+  before_action :set_current_user
 
   private
-
-  def set_user
-    if params[:id]
-      @user = User.find(params[:id])
-    end
-  end
 
   def set_current_user
     if session[:user_id]
