@@ -33,8 +33,10 @@
 <% if @current_user %>
   <%= link_to 'Post a new advertisement', new_advertisement_path %>
   <br>
-  <%= link_to 'Advertisements list', advertisements_path %>
 <% end %>
+
+<%= link_to 'Advertisements list', advertisements_path %>
+
 <br>
 
 <%= link_to 'New User', new_user_path %>

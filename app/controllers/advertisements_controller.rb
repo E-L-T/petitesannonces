@@ -1,6 +1,6 @@
 class AdvertisementsController < ApplicationController
   before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
-  before_action :set_authorization_for_admin, only: [:show, :edit, :update, :delete, :destroy]
+  before_action :set_authorization_for_admin, only: [:edit, :update, :delete, :destroy]
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :publish]
 
   def index

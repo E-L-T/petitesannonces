@@ -10,8 +10,10 @@
   <%= @advertisement.content %>
 </p>
 
-<% if @current_user.role == "admin" && @advertisement.state == 'waiting' %>
-  <%= link_to 'Publish', "/advertisements/#{@advertisement.id}/publish" %>
+<% if @current_user %>
+  <% if @current_user.role == "admin" && @advertisement.state == 'waiting' %>
+    <%= link_to 'Publish', "/advertisements/#{@advertisement.id}/publish" %>
+  <% end %>
 <% end %>
 <br><br>
 <%= link_to 'Edit', edit_advertisement_path(@advertisement) %> |
