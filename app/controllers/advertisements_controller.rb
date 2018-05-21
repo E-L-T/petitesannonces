@@ -8,13 +8,6 @@ class AdvertisementsController < ApplicationController
   end
 
   def show
-    if @current_user.role != 'admin'
-      respond_to do |format|
-        flash[:info] = 'Access restricted to admin'
-        format.html { redirect_to advertisements_path }
-        format.json { head :no_content }
-      end
-    end
   end
 
   def new
@@ -29,7 +22,8 @@ class AdvertisementsController < ApplicationController
 
     respond_to do |format|
       if @advertisement.save
-        format.html { redirect_to advertisements_path, notice: 'Advertisement was successfully created.' }
+        flash[:success] = 'Advertisement was successfully created.'
+        format.html { redirect_to advertisements_path }
       else
         format.html { render :new }
       end
@@ -39,7 +33,8 @@ class AdvertisementsController < ApplicationController
   def update
     respond_to do |format|
       if @advertisement.update(advertisement_params)
-        format.html { redirect_to @advertisement, notice: 'Advertisement was successfully updated.' }
+        flash[:success] = 'Advertisement was successfully updated.'
+        format.html { redirect_to @advertisement }
       else
         format.html { render :edit }
       end
@@ -49,14 +44,16 @@ class AdvertisementsController < ApplicationController
   def destroy
     @advertisement.destroy
     respond_to do |format|
-      format.html { redirect_to advertisements_url, notice: 'Advertisement was successfully destroyed.' }
+      flash[:success] = 'Advertisement was successfully destroyed.'
+      format.html { redirect_to advertisements_url }
     end
   end
 
   def publish
     respond_to do |format|
       if @advertisement.update(state: 'published')
-        format.html { redirect_to @advertisement, notice: 'Advertisement was successfully published.' }
+        flash[:success] = 'Advertisement was successfully published.'
+        format.html { redirect_to @advertisement }
       else
         format.html { render :show }
       end
@@ -79,7 +76,12 @@ class AdvertisementsController < ApplicationController
       return redirect_to request.referrer || root_path
     end
     if @current_user
-      if @current_user.role == "admin"
+      if @current_user.role != "admin"
+        respond_to do |format|
+          flash[:error] = 'Access restricted to admin'
+          format.html { redirect_to advertisements_path }
+        end
+      elsif @current_user.role == "admin"
         return true
       end
     end

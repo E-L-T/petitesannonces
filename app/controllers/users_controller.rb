@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   
   def logout
     session[:user_id] = nil
-    flash[:info] = "Vous êtes maintenant déconnecté"
+    flash[:success] = "You are now unlogged"
     redirect_to "/users"
   end
 
@@ -16,11 +16,11 @@ class UsersController < ApplicationController
     @current_user = User.where(name: params[:name], password: params[:password]).first
     if @current_user
       session[:user_id] = @current_user.id
-      flash[:info] = "You are now connected"
+      flash[:success] = "You are now logged"
       redirect_to "/users"
     else
       session[:user_id] = nil
-      flash[:info] = "You are now disconnected"
+      flash[:error] = "You are not logged"
       redirect_to "/users/login"
     end
   end
@@ -44,7 +44,7 @@ class UsersController < ApplicationController
 
     respond_to do |format|
       if @user.save
-        flash[:info] = 'User was successfully created.'
+        flash[:success] = 'User was successfully created.'
         format.html { redirect_to '/users' }
       else
         format.html { render :new }
@@ -55,7 +55,7 @@ class UsersController < ApplicationController
   def update
     respond_to do |format|
       if @user.update(user_params)
-        flash[:info] = 'User was successfully updated.'
+        flash[:success] = 'User was successfully updated.'
         format.html { redirect_to @user }
       else
         format.html { render :edit }
@@ -72,7 +72,7 @@ class UsersController < ApplicationController
       @current_user = nil
     end
     respond_to do |format|
-      flash[:info] = 'User was successfully destroyed.'
+      flash[:success] = 'User was successfully destroyed.'
       format.html { redirect_to users_url }
       format.json { head :no_content }
     end
@@ -100,7 +100,7 @@ class UsersController < ApplicationController
         return true
       end
       if @current_user.id != @user.id
-        flash[:info] = "Forbidden access"
+        flash[:error] = "Forbidden access"
         return redirect_to request.referrer || root_path
       end
     end
