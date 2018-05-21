@@ -78,8 +78,12 @@ class AdvertisementsController < ApplicationController
   end
 
   def set_authorization_for_admin_when_ad_state_is_waiting
-    return false if redirect_if_not_logged
-    redirect_to_index_if_not_admin_nor_waiting_state
+    if !@current_user.try(:admin?) && @advertisement.state == 'waiting'
+      respond_to do |format|
+        flash[:error] = 'Access restricted to admin'
+        format.html { redirect_to advertisements_path }
+      end
+    end
   end
 
   def redirect_if_not_logged
@@ -97,14 +101,4 @@ class AdvertisementsController < ApplicationController
       end
     end
   end
-
-  def redirect_to_index_if_not_admin_nor_waiting_state
-    if !@current_user.try(:admin?) && @advertisement.state == 'waiting'
-      respond_to do |format|
-        flash[:error] = 'Access restricted to admin'
-        format.html { redirect_to advertisements_path }
-      end
-    end
-  end
-
 end
