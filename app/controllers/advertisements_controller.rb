@@ -2,7 +2,7 @@ class AdvertisementsController < ApplicationController
   before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
   before_action :set_authorization_for_admin, only: [:edit, :update, :delete, :destroy]
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :publish]
-  # before_action :set_authorization_for_admin_when_ad_state_is_waiting, only: :show
+  before_action :set_authorization_for_admin_when_ad_state_is_waiting, only: :show
 
   def index
     @advertisements = Advertisement.all
@@ -73,37 +73,37 @@ class AdvertisementsController < ApplicationController
   end
 
   def set_authorization_for_admin
-    redirect_if_not_logged
-    if @current_user
-      if @current_user.role != "admin"
-        respond_to do |format|
-          flash[:error] = 'Access restricted to admin'
-          format.html { redirect_to advertisements_path }
-        end
-      elsif @current_user.role == "admin"
-        return true
-      end
-    end
+    return false if redirect_if_not_logged
+    redirect_to_index_if_not_admin
   end
 
   def set_authorization_for_admin_when_ad_state_is_waiting
-    redirect_if_not_logged
-    if @current_user
-      if @current_user.role != "admin" && @advertisement.state == 'waiting'
-        respond_to do |format|
-          flash[:error] = 'Access restricted to admin'
-          format.html { redirect_to advertisements_path }
-        end
-      elsif @current_user.role == "admin"
-        return true
-      end
-    end
+    return false if redirect_if_not_logged
+    redirect_to_index_if_not_admin_nor_waiting_state
   end
 
   def redirect_if_not_logged
     if !@current_user
       flash[:info] = "Please login"
       return redirect_to request.referrer || root_path
+    end
+  end
+
+  def redirect_to_index_if_not_admin
+    if !@current_user.try(:admin?)
+      respond_to do |format|
+        flash[:error] = 'Access restricted to admin'
+        format.html { redirect_to advertisements_path }
+      end
+    end
+  end
+
+  def redirect_to_index_if_not_admin_nor_waiting_state
+    if !@current_user.try(:admin?) && @advertisement.state == 'waiting'
+      respond_to do |format|
+        flash[:error] = 'Access restricted to admin'
+        format.html { redirect_to advertisements_path }
+      end
     end
   end
 
