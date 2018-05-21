@@ -13,7 +13,7 @@
 
   <tbody>
     <% @advertisements.each do |advertisement| %>
-      <% if advertisement.state == 'published' %>
+      <% if advertisement.state == 'published' || @current_user.try(:admin?) %>
         <tr>
           <td><%= advertisement.title %></td>
           <td><%= advertisement.content %></td>
