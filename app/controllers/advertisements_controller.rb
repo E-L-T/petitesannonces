@@ -8,6 +8,7 @@ class AdvertisementsController < ApplicationController
   end
 
   def show
+    @advertisement_author = User.find(@advertisement.user_id).name
   end
 
   def new
