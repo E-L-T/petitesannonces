@@ -13,13 +13,15 @@
 
   <tbody>
     <% @advertisements.each do |advertisement| %>
-      <tr>
-        <td><%= advertisement.title %></td>
-        <td><%= advertisement.content %></td>
-        <td><%= link_to 'Show', advertisement %></td>
-        <td><%= link_to 'Edit', edit_advertisement_path(advertisement) %></td>
-        <td><%= link_to 'Destroy', advertisement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
+      <% if advertisement.state == 'published' %>
+        <tr>
+          <td><%= advertisement.title %></td>
+          <td><%= advertisement.content %></td>
+          <td><%= link_to 'Show', advertisement %></td>
+          <td><%= link_to 'Edit', edit_advertisement_path(advertisement) %></td>
+          <td><%= link_to 'Destroy', advertisement, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>

@@ -2,6 +2,7 @@ class AdvertisementsController < ApplicationController
   before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
   before_action :set_authorization_for_admin, only: [:edit, :update, :delete, :destroy]
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :publish]
+  before_action :set_authorization_for_admin_when_ad_state_is_waiting, only: :show
 
   def index
     @advertisements = Advertisement.all
@@ -87,4 +88,22 @@ class AdvertisementsController < ApplicationController
       end
     end
   end
+
+  def set_authorization_for_admin_when_ad_state_is_waiting
+    if !@current_user
+      flash[:info] = "Please login"
+      return redirect_to request.referrer || root_path
+    end
+    if @current_user
+      if @current_user.role != "admin" && @advertisement.state == 'waiting'
+        respond_to do |format|
+          flash[:error] = 'Access restricted to admin'
+          format.html { redirect_to advertisements_path }
+        end
+      elsif @current_user.role == "admin"
+        return true
+      end
+    end
+  end
+
 end
