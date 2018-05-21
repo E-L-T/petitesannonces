@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
   before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
-  before_action :set_authorization, only: [:show, :edit, :update, :delete, :destroy]
+  before_action :set_authorization_for_current_user_and_admin, only: [:show, :edit, :update, :delete, :destroy]
 
   def login
   end
@@ -87,6 +87,22 @@ class UsersController < ApplicationController
   def set_user
     if params[:id]
       @user = User.find(params[:id])
+    end
+  end
+
+  def set_authorization_for_current_user_and_admin
+    if !@current_user
+      flash[:info] = "Please login"
+      return redirect_to request.referrer || root_path
+    end
+    if @current_user
+      if @current_user.role == "admin"
+        return true
+      end
+      if @current_user.id != @user.id
+        flash[:info] = "Forbidden access"
+        return redirect_to request.referrer || root_path
+      end
     end
   end
 end

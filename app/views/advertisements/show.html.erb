@@ -10,5 +10,9 @@
   <%= @advertisement.content %>
 </p>
 
+<% if @current_user && @current_user.role == "admin" && @advertisement.state == 'waiting' %>
+  <%= link_to 'Publier', "/advertisements/#{@advertisement.id}/publish" %>
+<% end %>
+
 <%= link_to 'Edit', edit_advertisement_path(@advertisement) %> |
 <%= link_to 'Back', advertisements_path %>
