@@ -10,6 +10,7 @@ class AdvertisementsController < ApplicationController
 
   def show
     @advertisement_author = User.find(@advertisement.user_id).name
+    @comment = Comment.new
   end
 
   def new

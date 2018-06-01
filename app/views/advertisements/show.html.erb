@@ -25,5 +25,7 @@
 <% end %>
 <br><br>
 
-<%= link_to 'Edit', edit_advertisement_path(@advertisement) %> |
+<%= link_to 'Edit', edit_advertisement_path(@advertisement) %>
+<%= render 'comment_form', comment: @comment, advertisement: @advertisement %>
+
 <%= link_to 'Back', advertisements_path %>

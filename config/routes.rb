@@ -6,5 +6,7 @@ Rails.application.routes.draw do
   root to: "users#index"
   get 'advertisements/:id/publish', to: 'advertisements#publish'
   resources :advertisements
+  resources :comments
+  post 'comments/create', to: 'advertisements#show'
 
 end

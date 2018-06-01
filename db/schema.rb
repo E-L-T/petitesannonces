@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2018_05_21_131204) do
+ActiveRecord::Schema.define(version: 2018_06_01_193556) do
 
   create_table "advertisements", force: :cascade do |t|
     t.string "title"
@@ -21,6 +21,14 @@ ActiveRecord::Schema.define(version: 2018_05_21_131204) do
     t.integer "state", default: 0
     t.integer "price"
     t.index ["user_id"], name: "index_advertisements_on_user_id"
+  end
+
+  create_table "comments", force: :cascade do |t|
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.string "content"
+    t.integer "user_id"
+    t.integer "advertisement_id"
   end
 
   create_table "users", force: :cascade do |t|
