@@ -9,7 +9,9 @@ class CommentsController < ApplicationController
     @comment = Comment.new(comment_params)
     if @comment.save
       flash[:success] = 'Comment was successfully created.'
-      redirect_to advertisements_path
+      puts params[:comment][:advertisement_id]
+      puts'*'*60
+      redirect_to advertisement_path params[:comment][:advertisement_id]
     else
       flash[:error] = 'Comment was not created.'
       redirect_to advertisements_path
