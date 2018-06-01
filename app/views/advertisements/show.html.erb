@@ -26,10 +26,37 @@
 <br><br>
 
 <%= link_to 'Edit', edit_advertisement_path(@advertisement) %>
+<br>
+
+<% if @comments.present?%>
+  <h2>Comments</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Author</th>
+        <th>Content</th>
+        <th colspan="3"></th>
+      </tr>
+    </thead>
+
+    <tbody>
+      <% @comments.each do |comment| %>
+        <% if comment.advertisement_id == @advertisement.id  %>
+          <tr>
+            <td><%= comment.user.name %></td>
+            <td><%= comment.content %></td>
+          </tr>
+        <% end %>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
 <% if session[:user_id] %>
-  <h2>Commentaires</h2>
   <%= render 'comment_form', comment: @comment, advertisement: @advertisement %>
 <% else %>
-  <%= link_to 'Connectez-vous pour laisser un commentaire', users_login_path %>
+  <%= link_to 'Login to post a comment', users_login_path %>
 <% end %>
+<br>
+
 <%= link_to 'Back', advertisements_path %>
