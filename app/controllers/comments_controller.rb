@@ -6,7 +6,6 @@ class CommentsController < ApplicationController
   end
 
   def create
-    puts '*'*60
     @comment = Comment.new(comment_params)
     if @comment.save
       flash[:success] = 'Comment was successfully created.'
