@@ -29,8 +29,9 @@
 </table>
 
 <br>
-
-<%= link_to 'New Advertisement', new_advertisement_path %>
+<% if @current_user %>
+  <%= link_to 'New Advertisement', new_advertisement_path %>
+<% end %>
 <br>
 <%= link_to 'Back to users list', users_path %>
 
