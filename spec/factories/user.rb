@@ -2,7 +2,7 @@
 
 FactoryBot.define do
   factory :user do
-    name 'Eloïse'
+    name 'Estelle'
     password 'password'
   end
 end
