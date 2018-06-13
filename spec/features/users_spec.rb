@@ -4,6 +4,7 @@ require 'rails_helper'
 
 describe "Users", type: :feature do
   let!(:user) { create :user }
+  let!(:user2) { create :user, name: 'Jean-René' }
 
   scenario "create an user" do
     visit new_user_path
@@ -20,9 +21,19 @@ describe "Users", type: :feature do
     expect(page).to have_content 'Estelle'
   end
   
-  scenario "login" do
-    log_in_user user
+  context "for a lambda user" do
+    scenario "login" do
+      log_in_user user
+
+      expect(page).to have_content "Welcome #{user.name} !!!!"
+    end
     
-    expect(page).to have_content "Welcome #{user.name} !!!!"
+    scenario "cannot edit another user" do
+      log_in_user user
+      find(:xpath, "//a[@href='/users/2/edit']").click
+
+      expect(page).to have_content "Forbidden access"
+    end
+
   end
 end
