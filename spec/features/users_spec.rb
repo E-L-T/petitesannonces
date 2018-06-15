@@ -13,29 +13,23 @@ describe "Users", type: :feature do
     fill_in :user_password, with: 'password'
     click_on 'Create User'
 
-    expect(page).to have_content 'Roger'
-  end
-
-  scenario "display users index" do
-    visit users_path
-
-    expect(page).to have_content 'Estelle'
+    expect(page).to have_content 'User was successfully created'
   end
   
-  context "as a lambda user" do
+  context "not logged" do
+    scenario "only see welcome anonymous" do
+      visit users_path
+      expect(page).to have_content "Welcome anonymous visitor !"
+      expect(page).not_to have_content "Estelle"
+    end
+  end
+
+  context "as a logged user" do
     scenario "login" do
       log_in_user user
 
       expect(page).to have_content "Welcome #{user.name} !!!!"
     end
-    
-    scenario "cannot edit another user" do
-      log_in_user user
-      find(:xpath, "//a[@href='/users/2/edit']").click
-
-      expect(page).to have_content "Forbidden access"
-    end
-
   end
 
   context "as an admin" do
