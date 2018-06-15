@@ -5,6 +5,7 @@ require 'rails_helper'
 describe "Users", type: :feature do
   let!(:user) { create :user }
   let!(:user2) { create :user, name: 'Jean-René' }
+  let!(:admin) { create :user, :administrateur, name: 'Admin' }
 
   scenario "create an user" do
     visit new_user_path
@@ -21,7 +22,7 @@ describe "Users", type: :feature do
     expect(page).to have_content 'Estelle'
   end
   
-  context "for a lambda user" do
+  context "as a lambda user" do
     scenario "login" do
       log_in_user user
 
@@ -33,6 +34,23 @@ describe "Users", type: :feature do
       find(:xpath, "//a[@href='/users/2/edit']").click
 
       expect(page).to have_content "Forbidden access"
+    end
+
+  end
+
+  context "as an admin" do
+    scenario "login" do
+      log_in_user admin
+
+      expect(page).to have_content "Welcome #{admin.name} !!!!"
+    end
+
+    scenario "can access to the show of another user" do
+      log_in_user admin
+      puts admin.inspect
+
+      find(:xpath, "//a[@href='/users/2/edit']").click
+      expect(page).to have_content "Editing User"
     end
 
   end
