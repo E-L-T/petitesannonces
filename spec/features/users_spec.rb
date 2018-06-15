@@ -45,7 +45,7 @@ describe "Users", type: :feature do
       expect(page).to have_content "Welcome #{admin.name} !!!!"
     end
 
-    scenario "can access to the show of another user" do
+    scenario "can access to the edit of another user" do
       log_in_user admin
       puts admin.inspect
 
