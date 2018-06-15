@@ -19,6 +19,7 @@ describe "Users", type: :feature do
   context "not logged" do
     scenario "only see welcome anonymous" do
       visit users_path
+
       expect(page).to have_content "Welcome anonymous visitor !"
       expect(page).not_to have_content "Estelle"
     end
@@ -33,18 +34,25 @@ describe "Users", type: :feature do
   end
 
   context "as an admin" do
+    before { log_in_user admin }
+    
     scenario "login" do
-      log_in_user admin
-
       expect(page).to have_content "Welcome #{admin.name} !!!!"
     end
 
-    scenario "can access to the edit of another user" do
-      log_in_user admin
-      puts admin.inspect
-
+    scenario "can edit another user" do
       find(:xpath, "//a[@href='/users/2/edit']").click
+
       expect(page).to have_content "Editing User"
+      fill_in "user_name", with: 'Angelina'
+      click_on 'Update User'
+      expect(page).to have_content "Angelina"
+    end
+
+    scenario "can destroy another user" do
+      find(:xpath, "/html/body/table/tbody/tr[1]/td[4]/a").click
+
+      expect(page).to have_content "User was successfully destroyed."
     end
 
   end
