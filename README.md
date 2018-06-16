@@ -1,3 +1,6 @@
 # README
 
-petitesannonces is a simple web application where users can publish advertisements and comments the ones from other users. The aim was to practice Ruby on Rails basics.
+## Petitesannonces
+Web application where users can publish and comment advertisements.
+The aim of this project is to practice Ruby on Rails basics, test driven development and refactoring.
+Gems for testing : rspec, capybara, poltergeist, shoulda matchers, launchy, rubocop
