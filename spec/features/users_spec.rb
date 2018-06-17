@@ -26,10 +26,19 @@ describe "Users", type: :feature do
   end
 
   context "as a logged user" do
-    scenario "login" do
-      log_in_user user
+    before { log_in_user user }
 
+    scenario "login" do
       expect(page).to have_content "Welcome #{user.name} !!!!"
+    end
+
+    scenario "logs out when you click on the link" do
+      visit advertisements_path
+      click_on 'Logout'
+      save_and_open_page
+
+      expect(page).to have_content('You are now unlogged')
+      expect(page).to have_content('Welcome anonymous visitor !')
     end
   end
 
