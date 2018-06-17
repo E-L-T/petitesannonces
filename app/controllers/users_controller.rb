@@ -8,7 +8,7 @@ class UsersController < ApplicationController
   def logout
     session[:user_id] = nil
     flash[:success] = "You are now unlogged"
-    redirect_to "/users"
+    redirect_to users_path
   end
 
   def check
@@ -16,11 +16,11 @@ class UsersController < ApplicationController
     if @current_user
       session[:user_id] = @current_user.id
       flash[:success] = "You are now logged"
-      redirect_to "/users"
+      redirect_to users_path
     else
       session[:user_id] = nil
       flash[:error] = "You are not logged"
-      redirect_to "/users/login"
+      redirect_to users_login_path
     end
   end
   
@@ -40,25 +40,20 @@ class UsersController < ApplicationController
 
   def create
     @user = User.new(user_params)
-
-    respond_to do |format|
-      if @user.save
-        flash[:success] = 'User was successfully created.'
-        format.html { redirect_to '/users' }
-      else
-        format.html { render :new }
-      end
+    if @user.save
+      flash[:success] = 'User was successfully created.'
+      redirect_to '/users'
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @user.update(user_params)
-        flash[:success] = 'User was successfully updated.'
-        format.html { redirect_to @user }
-      else
-        format.html { render :edit }
-      end
+    if @user.update(user_params)
+      flash[:success] = 'User was successfully updated.'
+      redirect_to @user
+    else
+      render :edit
     end
   end
 
@@ -70,11 +65,8 @@ class UsersController < ApplicationController
     else
       @current_user = nil
     end
-    respond_to do |format|
-      flash[:success] = 'User was successfully destroyed.'
-      format.html { redirect_to users_url }
-      format.json { head :no_content }
-    end
+    flash[:success] = 'User was successfully destroyed.'
+    redirect_to users_url
   end
 
   private
