@@ -31,13 +31,13 @@ describe "Advertisements", type: :feature do
       log_in_user user
       visit new_advertisement_path
       expect do
-      fill_in "advertisement_title", with: 'Canon 5D'
-      fill_in "advertisement_content", with: 'Great camera'
-      fill_in "advertisement_price", with: '800 euros'
-      click_on 'Create Advertisement'
-    end.to change { Advertisement.count }.by(1)
+        fill_in "advertisement_title", with: 'Canon 5D'
+        fill_in "advertisement_content", with: 'Great camera'
+        fill_in "advertisement_price", with: '800 euros'
+        click_on 'Create Advertisement'
+      end.to change { Advertisement.count }.by(1)
+    end
   end
-end
 
 context "as an admin" do
   before { log_in_user admin }
