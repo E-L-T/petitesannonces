@@ -35,7 +35,6 @@ describe "Users", type: :feature do
     scenario "logs out when you click on the link" do
       visit advertisements_path
       click_on 'Logout'
-      save_and_open_page
 
       expect(page).to have_content('You are now unlogged')
       expect(page).to have_content('Welcome anonymous visitor !')

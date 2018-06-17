@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
   before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
   before_action :set_authorization_for_current_user_and_admin, only: [:show, :edit, :update, :delete, :destroy]
 
   def login

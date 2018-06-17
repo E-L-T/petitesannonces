@@ -1,5 +1,4 @@
 class AdvertisementsController < ApplicationController
-  before_action :set_current_user, only: [:index, :show, :edit, :update, :delete, :destroy]
   before_action :set_authorization_for_admin, only: [:edit, :update, :delete, :destroy]
   before_action :set_advertisement, only: [:show, :edit, :update, :destroy, :publish]
   before_action :set_authorization_for_admin_when_ad_state_is_waiting, only: :show
