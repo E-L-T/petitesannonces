@@ -1,6 +1,5 @@
 class UsersController < ApplicationController
-  before_action :set_user, only: [:show, :edit, :update, :destroy]
-  before_action :set_authorization_for_current_user_and_admin, only: [:show, :edit, :update, :delete, :destroy]
+  before_action :set_user
 
   def login
   end
@@ -42,7 +41,7 @@ class UsersController < ApplicationController
     @user = User.new(user_params)
     if @user.save
       flash[:success] = 'User was successfully created.'
-      redirect_to '/users'
+      redirect_to users_path
     else
       render :new
     end
@@ -58,15 +57,10 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    if @current_user.role != 'admin'
-      @current_user = nil
-      session[:user_id] = nil
-    else
-      @current_user = nil
-    end
-    flash[:success] = 'User was successfully destroyed.'
-    redirect_to users_url
+    if @user.destroy
+      flash[:success] = 'User was successfully destroyed.'
+    end  
+    redirect_to users_path
   end
 
   private
@@ -78,22 +72,6 @@ class UsersController < ApplicationController
   def set_user
     if params[:id]
       @user = User.find(params[:id])
-    end
-  end
-
-  def set_authorization_for_current_user_and_admin
-    if !@current_user
-      flash[:info] = "Please login"
-      return redirect_to request.referrer || root_path
-    end
-    if @current_user
-      if @current_user.role == "admin"
-        return true
-      end
-      if @current_user.id != @user.id
-        flash[:error] = "Forbidden access"
-        return redirect_to request.referrer || root_path
-      end
     end
   end
 end
