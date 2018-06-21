@@ -58,7 +58,9 @@ describe "Users", type: :feature do
     end
 
     scenario "can destroy another user" do
-      find(:xpath, "/html/body/table/tbody/tr[1]/td[4]/a").click
+      within('tbody > tr:first-of-type') do
+        click_on 'Destroy'
+      end
 
       expect(page).to have_content "User was successfully destroyed."
     end

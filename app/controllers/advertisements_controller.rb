@@ -22,44 +22,35 @@ class AdvertisementsController < ApplicationController
 
   def create
     @advertisement = Advertisement.new(advertisement_params)
-
-    respond_to do |format|
-      if @advertisement.save
-        flash[:success] = 'Advertisement was successfully created.'
-        format.html { redirect_to advertisements_path }
-      else
-        format.html { render :new }
-      end
+    if @advertisement.save
+      flash[:success] = 'Advertisement was successfully created.'
+      redirect_to advertisements_path
+    else
+      render :new
     end
   end
 
   def update
-    respond_to do |format|
-      if @advertisement.update(advertisement_params)
-        flash[:success] = 'Advertisement was successfully updated.'
-        format.html { redirect_to @advertisement }
-      else
-        format.html { render :edit }
-      end
+    if @advertisement.update(advertisement_params)
+      flash[:success] = 'Advertisement was successfully updated.'
+      redirect_to @advertisement
+    else
+      render :edit
     end
   end
 
   def destroy
     @advertisement.destroy
-    respond_to do |format|
-      flash[:success] = 'Advertisement was successfully destroyed.'
-      format.html { redirect_to advertisements_url }
-    end
+    flash[:success] = 'Advertisement was successfully destroyed.'
+    redirect_to advertisements_url
   end
 
   def publish
-    respond_to do |format|
-      if @advertisement.update(state: 'published')
-        flash[:success] = 'Advertisement was successfully published.'
-        format.html { redirect_to @advertisement }
-      else
-        format.html { render :show }
-      end
+    if @advertisement.update(state: 'published')
+      flash[:success] = 'Advertisement was successfully published.'
+      redirect_to @advertisement
+    else
+      render :show
     end
   end
 
@@ -80,10 +71,8 @@ class AdvertisementsController < ApplicationController
 
   def set_authorization_for_admin_when_ad_state_is_waiting
     if !@current_user.try(:admin?) && @advertisement.state == 'waiting'
-      respond_to do |format|
-        flash[:error] = 'Access restricted to admin'
-        format.html { redirect_to advertisements_path }
-      end
+      flash[:error] = 'Access restricted to admin'
+      redirect_to advertisements_path
     end
   end
 
@@ -96,10 +85,8 @@ class AdvertisementsController < ApplicationController
 
   def redirect_to_index_if_not_admin
     if !@current_user.try(:admin?)
-      respond_to do |format|
-        flash[:error] = 'Access restricted to admin'
-        format.html { redirect_to advertisements_path }
-      end
+      flash[:error] = 'Access restricted to admin'
+      redirect_to advertisements_path
     end
   end
 end
