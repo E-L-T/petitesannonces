@@ -10,14 +10,16 @@
   </head>
 
   <body>
-  <div class='info' ><%= flash[:info] %></div>
-  <div class='error' ><%= flash[:error] %></div>
-  <div class='success' ><%= flash[:success] %></div>
-  <% if session[:user_id] %>
-    <%= link_to 'Logout', users_logout_path%>
-  <% else %>
-    <%= link_to 'Login', users_login_path%>
-  <% end %>
-    <%= yield %>
+    <div class='wrapper'>
+      <div class='info' ><%= flash[:info] %></div>
+      <div class='error' ><%= flash[:error] %></div>
+      <div class='success' ><%= flash[:success] %></div>
+      <% if session[:user_id] %>
+        <%= link_to 'Logout', users_logout_path%>
+      <% else %>
+        <%= link_to 'Login', users_login_path%>
+      <% end %>
+      <%= yield %>
+    </div>
   </body>
 </html>

@@ -1,1 +1,18 @@
 @import "bourbon";
+@import "base/base";
+
+.wrapper {
+  width: 80%;
+  margin: auto;
+  padding: 20px 0;
+}
+
+.info {
+  color: purple;
+}
+.error {
+  color: red;
+}
+.success {
+  color: green;
+}

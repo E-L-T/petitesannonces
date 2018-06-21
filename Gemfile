@@ -37,7 +37,7 @@ gem 'jbuilder', '~> 2.5'
 gem 'bootsnap', '>= 1.1.0', require: false
 
 gem 'traceroute'
-
+gem 'sprockets', '~> 3.7.2'
 gem 'bourbon'
 
 
